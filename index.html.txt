@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo de Moedas</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #0a4fb3;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+/* Área superior */
+.top-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px;
+}
+
+/* Botões circulares */
+.circle-btn {
+    width: 55px;
+    height: 55px;
+    background-color: #0a4fb3;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.circle-btn img {
+    width: 30px;
+}
+
+/* Barra de busca */
+.search-bar {
+    width: 70%;
+    padding: 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #d9d9d9;
+    font-size: 18px;
+}
+
+/* Botão curiosidades */
+.curiosidades-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 15px 30px;
+    background-color: #0a4fb3;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Área das moedas */
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 20px;
+}
+
+/* Card da moeda */
+.card {
+    background-color: #d9d9d9;
+    width: 260px;
+    border-radius: 25px;
+    padding: 15px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Número da moeda */
+.coin-number {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-weight: bold;
+}
+
+/* Área imagem */
+.image-box {
+    background-color: #e6e6e6;
+    height: 180px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    width: 300px;
+    text-align: center;
+}
+
+/* Input senha */
+input {
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Botões gerais */
+button {
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #0a4fb3;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>Catálogo de Moedas</header>
+
+<div class="top-area">
+    <input class="search-bar" type="text" placeholder="Buscar moeda..." onkeyup="buscarMoeda(this.value)">
+    
+    <div class="circle-btn" onclick="abrirTroca()">
+        <img src="https://cdn-icons-png.flaticon.com/512/891/891462.png">
+    </div>
+
+    <div class="circle-btn" onclick="abrirSenha()">
+        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png">
+    </div>
+</div>
+
+<button class="curiosidades-btn" onclick="abrirCuriosidades()">Curiosidades das moedas</button>
+
+<div class="container" id="listaMoedas"></div>
+
+<!-- Modal senha -->
+<div class="modal" id="modalSenha">
+    <div class="modal-content">
+        <h3>Digite a senha</h3>
+        <input type="password" id="senha">
+        <button onclick="verificarSenha()">Entrar</button>
+    </div>
+</div>
+
+<!-- Modal detalhes -->
+<div class="modal" id="modalDetalhes">
+    <div class="modal-content" id="detalhesMoeda"></div>
+</div>
+
+<script>
+const moedas = [
+    {
+        numero: 1,
+        nome: "Moeda Exemplo",
+        descricao: "Descrição simples da moeda",
+        detalhes: "Informações detalhadas da moeda."
+    }
+];
+
+function carregarMoedas(lista = moedas) {
+    const container = document.getElementById("listaMoedas");
+    container.innerHTML = "";
+    lista.forEach(moeda => {
+        container.innerHTML += `
+        <div class="card" onclick="abrirDetalhes(${moeda.numero})">
+            <div class="coin-number">${moeda.numero}</div>
+            <div class="image-box">Imagem da moeda ou da cédula</div>
+            <strong>${moeda.nome}</strong>
+        </div>`;
+    });
+}
+
+function buscarMoeda(texto) {
+    const filtradas = moedas.filter(m =>
+        m.nome.toLowerCase().includes(texto.toLowerCase()) ||
+        m.numero.toString().includes(texto)
+    );
+    carregarMoedas(filtradas);
+}
+
+function abrirDetalhes(numero) {
+    const moeda = moedas.find(m => m.numero === numero);
+    document.getElementById("detalhesMoeda").innerHTML = `
+        <h3>${moeda.nome}</h3>
+        <p>${moeda.detalhes}</p>
+        <button onclick="fecharModal('modalDetalhes')">Fechar</button>
+    `;
+    document.getElementById("modalDetalhes").style.display = "flex";
+}
+
+function abrirSenha() {
+    document.getElementById("modalSenha").style.display = "flex";
+}
+
+function verificarSenha() {
+    const senha = document.getElementById("senha").value;
+    if (senha === "murilolindo") {
+        alert("Acesso liberado para registrar nova moeda.");
+    } else {
+        location.reload();
+    }
+}
+
+function abrirTroca() {
+    alert("Área de troca e venda.");
+}
+
+function abrirCuriosidades() {
+    alert("Curiosidades da coleção.");
+}
+
+function fecharModal(id) {
+    document.getElementById(id).style.display = "none";
+}
+
+carregarMoedas();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Registrar Moeda</title>
+
+<style>
+body { margin:0; font-family:Arial; background:#fff; text-align:center; }
+header { background:#0a4fb3; color:white; padding:25px; font-size:28px; }
+.box {
+    background:#d9d9d9;
+    margin:30px auto;
+    padding:25px;
+    width:300px;
+    border-radius:25px;
+}
+input {
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+}
+button {
+    margin-top:15px;
+    padding:12px 25px;
+    background:#0a4fb3;
+    color:white;
+    border:none;
+    border-radius:20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>Registrar Nova Moeda</header>
+
+<div class="box">
+    <p>Abrir câmera para fotografar a moeda</p>
+    <input type="file" accept="image/*" capture="camera">
+    <input type="text" placeholder="Nome da moeda">
+    <input type="number" placeholder="Número da moeda">
+    <button>Registrar</button>
+</div>
+
+<button onclick="location.href='index.html'">Voltar</button>
+
+</body>
+</html>
